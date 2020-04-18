@@ -1,8 +1,7 @@
 package part2dataframes
 
+import org.apache.spark.sql.types._
 import org.apache.spark.sql.{SaveMode, SparkSession}
-import org.apache.spark.sql.types.{DoubleType, LongType, StringType, StructField, StructType}
-import part2dataframes.DataFramesBasics.spark
 
 /**
   * @author mkarki
