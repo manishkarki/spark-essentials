@@ -44,7 +44,7 @@ object DataFramesBasics extends App {
   //obtain a schema of existing DF which is of type StructType
   val carsDFSchema = firstDf.schema
   println(carsDFSchema)
-  //note: inferSchema should be avoided in prod like environmnet
+  //note: inferSchema should be avoided in prod like environment
   //read a DF with own schema
   val carsDFWithSchema = spark.read
     .format("json")
