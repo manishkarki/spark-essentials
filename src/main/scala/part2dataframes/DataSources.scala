@@ -7,22 +7,24 @@ import org.apache.spark.sql.{SaveMode, SparkSession}
   * @author mkarki
   */
 object DataSources extends App {
-  val spark = SparkSession.builder()
+  val spark = SparkSession
+    .builder()
     .appName("Data Sources and Formats")
     .config("spark.master", "local")
     .getOrCreate()
 
-  val carsSchema = StructType(Array(
-    StructField("Name", StringType),
-    StructField("Miles_per_Gallon", DoubleType),
-    StructField("Cylinders", LongType),
-    StructField("Displacement", DoubleType),
-    StructField("Horsepower", LongType),
-    StructField("Weight_in_lbs", LongType),
-    StructField("Acceleration", DoubleType),
-    StructField("Year", StringType),
-    StructField("Origin", StringType)
-  ))
+  val carsSchema = StructType(
+    Array(
+      StructField("Name", StringType),
+      StructField("Miles_per_Gallon", DoubleType),
+      StructField("Cylinders", LongType),
+      StructField("Displacement", DoubleType),
+      StructField("Horsepower", LongType),
+      StructField("Weight_in_lbs", LongType),
+      StructField("Acceleration", DoubleType),
+      StructField("Year", StringType),
+      StructField("Origin", StringType)
+    ))
 
   /**
     * reading a DF:
@@ -38,11 +40,12 @@ object DataSources extends App {
   // alternative reading with options map
   val carsDFWithOptionMap = spark.read
     .format("json")
-    .options(Map(
-      "mode" -> "failFast",
-      "path" -> "src/main/resources/data/cars.json",
-      "inferSchema" -> "true"
-    ))
+    .options(
+      Map(
+        "mode" -> "failFast",
+        "path" -> "src/main/resources/data/cars.json",
+        "inferSchema" -> "true"
+      ))
     .load()
 
   /*
@@ -67,11 +70,12 @@ object DataSources extends App {
     .json("src/main/resources/data/cars.json")
 
   //CSV Flags
-  val stockSchema = StructType(Array(
-    StructField("symbol", StringType),
-    StructField("date", DateType),
-    StructField("price", DoubleType)
-  ))
+  val stockSchema = StructType(
+    Array(
+      StructField("symbol", StringType),
+      StructField("date", DateType),
+      StructField("price", DoubleType)
+    ))
 
   spark.read
     .schema(stockSchema)
@@ -96,5 +100,41 @@ object DataSources extends App {
     .option("dbtable", "public.employees")
     .load()
   // progress: time: 19:40
+
+  /**
+    * Exercise: read the movies DF, then write it as
+    * - tab-separated values file
+    * - snappy parquet
+    * - table public.movies in the postgres db
+    */
+  val moviesDF = spark.read
+    .format("json")
+    .load("src/main/resources/data/movies.json")
+
+  println("writing movies.json")
+
+//task 1: tsv
+  moviesDF.write
+    .format("csv")
+    .mode(SaveMode.Overwrite)
+    .option("header", "true")
+    .option("path", "src/main/resources/data/movies-saved")
+    .option("sep", "\t")
+    .save
+
+  //task 2: save as parquet
+  moviesDF.write
+    .mode(SaveMode.Overwrite)
+    .parquet("src/main/resources/data/movies-saved") // default compression is snappy
+
+  //task 3: in postgres
+  moviesDF.write
+    .format("jdbc")
+    .option("driver", "org.postgresql.Driver")
+    .option("url", "jdbc:postgresql://localhost:5432/rtjvm")
+    .option("user", "docker")
+    .option("password", "docker")
+    .option("dbtable", "public.movies")
+    .save
 
 }
