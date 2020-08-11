@@ -90,13 +90,18 @@ object DataSources extends App {
     .mode(SaveMode.Overwrite)
     .save("src/main/resources/data/cars") // by default since we didn't specified any format, this'll get saved as parquet
 
+  val driver: String = "org.postgresql.Driver"
+  val url: String = "jdbc:postgresql://localhost:5432/rtjvm"
+  val uName: String = "docker"
+  val password: String = "docker"
+
   // reading from a DB postgress, just go to the terminal and enter: docker-compose up
   val employeeDF = spark.read
     .format("jdbc")
-    .option("driver", "org.postgresql.Driver")
-    .option("url", "jdbc:postgresql://localhost:5432/rtjvm")
-    .option("user", "docker")
-    .option("password", "docker")
+    .option("driver", driver)
+    .option("url", url)
+    .option("user", uName)
+    .option("password", password)
     .option("dbtable", "public.employees")
     .load()
   // progress: time: 19:40
@@ -130,10 +135,10 @@ object DataSources extends App {
   //task 3: in postgres
   moviesDF.write
     .format("jdbc")
-    .option("driver", "org.postgresql.Driver")
-    .option("url", "jdbc:postgresql://localhost:5432/rtjvm")
-    .option("user", "docker")
-    .option("password", "docker")
+    .option("driver", driver)
+    .option("url", url)
+    .option("user", uName)
+    .option("password", password)
     .option("dbtable", "public.movies")
     .save
 
