@@ -92,4 +92,10 @@ object ColumnsAndExpression extends App {
     *
     * Use as many versions as possible
     */
+
+  //1
+  val moviesDFWithTwoColumns = spark.read.format("json")
+    .load("src/main/resources/data/movies.json")
+    .select("Title", "US_Gross")
+
 }
