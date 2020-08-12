@@ -107,5 +107,11 @@ object ColumnsAndExpression extends App {
     .withColumn("total_gross", expr("US_Gross + Worldwide_Gross + US_DVD_Sales"))
 
   //3
+  val goodComedyMoviesDF = spark.read
+    .format("json")
+    .load("src/main/resources/data/movies.json")
+    .select('title, 'imdb_rating, 'US_Gross)
+    .where('imdb_rating > 6)
 
+  goodComedyMoviesDF.show
 }
