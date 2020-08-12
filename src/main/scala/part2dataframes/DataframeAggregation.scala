@@ -22,5 +22,6 @@ object DataframeAggregation extends App {
 
   moviesDF.select(countDistinct("Major_Genre"))
   // approximate count
-  moviesDF.select(approx_count_distinct("Major_Genre")).show
+  moviesDF.select(approx_count_distinct("Major_Genre"))
+  moviesDF.selectExpr("approx_count_distinct(Major_Genre)").show
 }
