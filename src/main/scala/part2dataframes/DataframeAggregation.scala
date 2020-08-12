@@ -1,7 +1,7 @@
 package part2dataframes
 
 import org.apache.spark.sql.SparkSession
-import org.apache.spark.sql.functions.{approx_count_distinct, col, count, countDistinct, sum}
+import org.apache.spark.sql.functions.{approx_count_distinct, avg, col, count, countDistinct, mean, stddev, sum}
 
 /**
   * @author mkarki
@@ -27,5 +27,15 @@ object DataframeAggregation extends App {
 
   //sum
   moviesDF.select(sum("US_Gross").as("INCOME_IN_US"))
-  moviesDF.selectExpr("sum(US_Gross) as INCOME_IN_US").show
+  moviesDF.selectExpr("sum(US_Gross) as INCOME_IN_US")
+
+  //avg
+  moviesDF.select(avg(col("Rotten_Tomatoes_Rating")).as("avg_RT_rating"))
+  moviesDF.selectExpr("avg(Rotten_Tomatoes_Rating) as avg_rating_RT")
+
+  // data science
+  moviesDF.select(
+    mean(col("Rotten_Tomatoes_Rating")),
+    stddev(col("Rotten_Tomatoes_Rating"))
+  )
 }
