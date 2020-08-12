@@ -1,7 +1,7 @@
 package part2dataframes
 
 import org.apache.spark.sql.SparkSession
-import org.apache.spark.sql.functions.{approx_count_distinct, col, count, countDistinct}
+import org.apache.spark.sql.functions.{approx_count_distinct, col, count, countDistinct, sum}
 
 /**
   * @author mkarki
@@ -23,5 +23,9 @@ object DataframeAggregation extends App {
   moviesDF.select(countDistinct("Major_Genre"))
   // approximate count
   moviesDF.select(approx_count_distinct("Major_Genre"))
-  moviesDF.selectExpr("approx_count_distinct(Major_Genre)").show
+  moviesDF.selectExpr("approx_count_distinct(Major_Genre)")
+
+  //sum
+  moviesDF.select(sum("US_Gross").as("INCOME_IN_US"))
+  moviesDF.selectExpr("sum(US_Gross) as INCOME_IN_US").show
 }
