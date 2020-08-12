@@ -66,7 +66,37 @@ object DataframeAggregation extends App {
     */
 
   //1
-  val allMoviesSum = moviesDF.select(sum("US_Gross"))
-  val allMoviesSum2 = moviesDF.selectExpr("sum(US_Gross) as total_sum").show
+  val allMoviesSum = moviesDF.selectExpr("US_Gross + Worldwide_Gross + US_DVD_Sales as Total_Gross")
+    .select(sum("Total_Gross"))
+  val allMoviesSum2 = moviesDF
+    .select((col("US_Gross") + col("Worldwide_Gross") + col("US_DVD_Sales")).as("Total_Gross"))
+    .select(sum("Total_Gross").as("Total_Gross"))
+  val allMoviesSum3 = moviesDF.selectExpr("sum(US_Gross + Worldwide_Gross + US_DVD_Sales) as total_sum")
+
+  //2
+  val distinctDirectorsCountDF = moviesDF.select(countDistinct("Director"))
+
+  //3
+  val aggByGrossDF = moviesDF
+    .agg(
+      mean("US_Gross").as("Mean_US_Gross"),
+      stddev("US_Gross").as("SD_US_Gross")
+    )
+
+  val aggByGrossDF2 = moviesDF
+    .select(
+      mean("US_Gross").as("Mean_US_Gross"),
+      stddev("US_Gross").as("SD_US_Gross")
+    )
+
+  //4
+  val avgByDirector = moviesDF
+    .groupBy("Director")
+    .agg(
+      avg("US_Gross").as("Avg_US_Gross"),
+      avg("IMDB_Rating").as("Avg_IMDB_Rating")
+    )
+    .orderBy(col("Avg_IMDB_Rating").desc_nulls_last)
+    .show
 
 }
