@@ -20,4 +20,6 @@ object DataframeAggregation extends App {
   // count all
   moviesDF.select(count("*").as("genre_count")).show
   genresCountDF.show
+
+
 }
