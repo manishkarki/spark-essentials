@@ -1,7 +1,7 @@
 package part2dataframes
 
 import org.apache.spark.sql.SparkSession
-import org.apache.spark.sql.functions.{count, col}
+import org.apache.spark.sql.functions.{col, count, countDistinct}
 
 /**
   * @author mkarki
@@ -18,8 +18,7 @@ object DataframeAggregation extends App {
   val genresCountDF = moviesDF.select(count(col("Major_genre")).as("genre_count")) // all the values except null
   moviesDF.selectExpr("count(Major_Genre)")
   // count all
-  moviesDF.select(count("*").as("genre_count")).show
-  genresCountDF.show
+  moviesDF.select(count("*").as("genre_count"))
 
-
+  moviesDF.select(countDistinct("Major_Genre")).show
 }
