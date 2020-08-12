@@ -100,8 +100,7 @@ object ColumnsAndExpression extends App {
 
   //2
   val grossProfitsDF = spark.read
-    .format("json")
-    .load("src/main/resources/data/movies.json")
+    .json("src/main/resources/data/movies.json")
     .select("title", "US_Gross", "Worldwide_Gross", "US_DVD_Sales")
     .na.fill(0)
     .withColumn("total_gross", expr("US_Gross + Worldwide_Gross + US_DVD_Sales"))
