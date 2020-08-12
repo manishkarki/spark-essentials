@@ -83,4 +83,13 @@ object ColumnsAndExpression extends App {
   //distinct values
   val allCountriesDF = carsDF.select("Origin").distinct
 
+  /**
+    * Exercises
+    *
+    * 1. Read the movies DF, select two columns of your choice
+    * 2. Create a new DF by summing up the gross profits (US_Gross, Worldwide_Gross, US_DVD_Sales)
+    * 3. Select all comedy movies with IMDB_Rating above 6
+    *
+    * Use as many versions as possible
+    */
 }
