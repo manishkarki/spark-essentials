@@ -65,4 +65,8 @@ object DataframeAggregation extends App {
     * 4. Compute the avg IMDB rating and the avg US gross revenue per direction PER DIRECTOR
     */
 
+  //1
+  val allMoviesSum = moviesDF.select(sum("US_Gross"))
+  val allMoviesSum2 = moviesDF.selectExpr("sum(US_Gross) as total_sum").show
+
 }
