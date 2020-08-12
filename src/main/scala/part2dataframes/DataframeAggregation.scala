@@ -38,4 +38,23 @@ object DataframeAggregation extends App {
     mean(col("Rotten_Tomatoes_Rating")),
     stddev(col("Rotten_Tomatoes_Rating"))
   )
+
+  //Grouping
+  val countMovieByGenreDF = moviesDF
+    .groupBy(col("Major_Genre")) // includes nulls
+    .count // select count(*) from movieDF group by movie_genre
+
+  val avgRatingByGenreDF = moviesDF
+    .groupBy(col("Major_Genre"))
+    .avg("IMDB_Rating")
+
+  val aggrByGenreDF = moviesDF
+    .groupBy(col("Major_Genre"))
+    .agg(
+      count("*").as("N_Movies"),
+      avg("IMDB_Rating").as("Avg_Rating")
+    )
+    .orderBy(col("Avg_Rating"))
+
+
 }
