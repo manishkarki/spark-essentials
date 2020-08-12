@@ -8,8 +8,7 @@ import org.apache.spark.sql.functions.expr
   */
 object Joins extends App {
 
-  val spark = SparkSession
-    .builder
+  val spark = SparkSession.builder
     .appName("Joins")
     .config("spark.master", "local")
     .getOrCreate
@@ -52,9 +51,11 @@ object Joins extends App {
 
   //option 3- rename the offending column and keep the data
   val bandsModDF = bandsDF.withColumnRenamed("id", "band_id")
-  guitaristDF.join(bandsModDF, guitaristDF.col("band") === bandsModDF.col("band_id"))
+  guitaristDF.join(bandsModDF,
+                   guitaristDF.col("band") === bandsModDF.col("band_id"))
 
   //using complex types
-  guitaristDF.join(guitarsDF.withColumnRenamed("id", "guitarId"), expr("array_contains(guitars, guitarId)"))
+  guitaristDF.join(guitarsDF.withColumnRenamed("id", "guitarId"),
+                   expr("array_contains(guitars, guitarId)"))
 
 }
