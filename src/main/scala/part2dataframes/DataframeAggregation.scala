@@ -56,5 +56,13 @@ object DataframeAggregation extends App {
     )
     .orderBy(col("Avg_Rating"))
 
+  /**
+    * Exercise
+    *
+    * 1. Sum up all the profits of All the Movies in the DF
+    * 2. Count how many distinct directors we have
+    * 3. Show the mean and standard deviation of US Gross income
+    * 4. Compute the avg IMDB rating and the avg US gross revenue per direction PER DIRECTOR
+    */
 
 }
