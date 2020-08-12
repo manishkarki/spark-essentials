@@ -110,6 +110,7 @@ object ColumnsAndExpression extends App {
     .format("json")
     .load("src/main/resources/data/movies.json")
     .select('title, 'imdb_rating, 'US_Gross)
+    .filter("major_genre = 'Comedy'")
     .where('imdb_rating > 6)
 
   goodComedyMoviesDF.show
