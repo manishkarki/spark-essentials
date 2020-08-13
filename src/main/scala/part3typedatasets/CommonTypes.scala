@@ -42,4 +42,25 @@ object CommonTypes extends App {
 
   // correlation = number between -1 and 1
   println(moviesDF.stat.corr("Rotten_Tomatoes_Rating", "IMDB_Rating")) /* corr is an action */
+
+  //String
+  val carsDF = spark.read
+    .json("src/main/resources/data/cars.json")
+  //capitalization: initcap, lower, upper
+  carsDF.select(initcap(col("Name")))
+
+  // contains
+  carsDF.select("*").where(col("Name").contains("volkswagen"))
+
+  // regex
+  val regexString = "volkswagen|vw"
+  val vWDF = carsDF.select(
+    col("Name"),
+    regexp_extract(col("Name"), regexString, 0).as("regex_extract")
+  ).where(col("regex_extract") =!= "")
+
+  carsDF.select(
+    col("Name"),
+    regexp_replace(col("Name"), regexString, "People's Car").as("regex_replace")
+  )
 }
