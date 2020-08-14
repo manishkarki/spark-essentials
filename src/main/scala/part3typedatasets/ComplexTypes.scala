@@ -45,4 +45,17 @@ object ComplexTypes extends App {
     .load("src/main/resources/data/stocks.csv")
 
   stocksDF.select(col("symbol"), to_date(col("date"), "MMM dd YYYY")).show()
+
+  // Structures: groups of columns aggregated in one
+
+  // 1 - with col operators
+  moviesDF.select(
+    col("title"),
+    struct(col("US_Gross"), col("Worldwide_Gross"))
+      .as("Revenue")
+  ).select(col("title"), col("Revenue").getField("US_Gross").as("US_Revenue"))
+
+  //2 - with expression strings
+  moviesDF.selectExpr("title", "(US_Gross, Worldwide_Gross) as Revenue")
+    .selectExpr("Title", "Revenue.US_Gross")
 }
