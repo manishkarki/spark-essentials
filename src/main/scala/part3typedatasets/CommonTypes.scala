@@ -71,5 +71,14 @@ object CommonTypes extends App {
     * 1. Filter cars DF by a list of car names obtained by an API call
     */
 
-  def getCarNames: List[String] = ???
+  def getCarNames: List[String] = List("Volkswagen", "Toyota", "Ford")
+
+  val carsFilter = getCarNames.map(_.toLowerCase).mkString("|")
+
+  carsDF.select(
+    col("Name"),
+    regexp_extract(col("Name"), carsFilter, 0).as("regex_extract")
+  ).where(col("regex_extract") =!= "")
+    .drop("regex_extract")
+    .show()
 }
