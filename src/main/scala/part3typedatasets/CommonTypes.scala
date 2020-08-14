@@ -12,6 +12,8 @@ object CommonTypes extends App {
     .appName("Common Spark Types")
     .getOrCreate
 
+  spark.sparkContext.setLogLevel("ERROR")
+
   val moviesDF = spark.read
     .json("src/main/resources/data/movies.json")
 
@@ -59,8 +61,8 @@ object CommonTypes extends App {
     regexp_extract(col("Name"), regexString, 0).as("regex_extract")
   ).where(col("regex_extract") =!= "").drop("regex_extract")
 
-  carsDF.select(
+  vWDF.select(
     col("Name"),
     regexp_replace(col("Name"), regexString, "People's Car").as("regex_replace")
-  )
+  ).show
 }
