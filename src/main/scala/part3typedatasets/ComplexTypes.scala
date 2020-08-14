@@ -11,12 +11,18 @@ object ComplexTypes extends App {
     .config("spark.master", "local")
     .appName("Complex types")
     .getOrCreate
-  spark.sql("set spark.sql.legacy.timeParserPolicy=LEGACY")
+
   val moviesDF = spark.read
     .option("inferSchema", "true")
     .json("src/main/resources/data/movies.json")
 
+  //needed for spark 3
+  spark.sql("set spark.sql.legacy.timeParserPolicy=LEGACY")
   //Dates
   moviesDF
-    .select(col("Title"), to_date(col("Release_Date"), "dd-MMM-yy"))
+    .select(col("Title"), to_date(col("Release_Date"), "dd-MMM-yy").as("Actual_Release")) // conversion
+    .withColumn("Today", current_date()) // today
+    .withColumn("Right_now", current_timestamp()) // now
+    .withColumn("movie_age", datediff(col("Today"), col("Actual_Release")) / 365) // diff in days
+    .show
 }
