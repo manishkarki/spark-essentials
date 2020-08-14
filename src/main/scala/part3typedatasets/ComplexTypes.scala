@@ -33,4 +33,14 @@ object ComplexTypes extends App {
     * 1. How do we deal with multiple date formats?
     * 2. Read the stocks DF and parse dates
     */
+
+    // 1 - parse the DF multiple times, then union the small DFs
+    //    - ignore the minimum rows which are corrupted
+
+  val stocksDF = spark.read
+      .format("csv")
+    .option("header", "true")
+    .load("src/main/resources/data/stocks.csv")
+
+  stocksDF.select(col("symbol"), to_date(col("date"), "MMM dd YYYY")).show()
 }
