@@ -75,10 +75,18 @@ object CommonTypes extends App {
 
   val carsFilter = getCarNames.map(_.toLowerCase).mkString("|")
 
+  //v1
   carsDF.select(
     col("Name"),
     regexp_extract(col("Name"), carsFilter, 0).as("regex_extract")
   ).where(col("regex_extract") =!= "")
     .drop("regex_extract")
-    .show()
+
+  //v2- contains
+  val carNameFilters = getCarNames.map(_.toLowerCase()).map(name => col("Name").contains(name))
+  val bigFilter = carNameFilters.fold(lit(false)) ((combinedFilter, newCarNameFilter) => {
+    println(s"combined Filter: $combinedFilter and newCarNameFilter: $newCarNameFilter")
+    combinedFilter or newCarNameFilter
+  })
+  println(bigFilter)
 }
