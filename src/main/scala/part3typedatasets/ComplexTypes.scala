@@ -44,7 +44,7 @@ object ComplexTypes extends App {
     .option("header", "true")
     .load("src/main/resources/data/stocks.csv")
 
-  stocksDF.select(col("symbol"), to_date(col("date"), "MMM dd YYYY")).show()
+  stocksDF.select(col("symbol"), to_date(col("date"), "MMM dd YYYY"))
 
   // Structures: groups of columns aggregated in one
 
@@ -56,6 +56,19 @@ object ComplexTypes extends App {
   ).select(col("title"), col("Revenue").getField("US_Gross").as("US_Revenue"))
 
   //2 - with expression strings
-  moviesDF.selectExpr("title", "(US_Gross, Worldwide_Gross) as Revenue")
+  moviesDF.selectExpr("Title", "(US_Gross, Worldwide_Gross) as Revenue")
     .selectExpr("Title", "Revenue.US_Gross")
+
+  // Arrays
+  val moviesWithWords = moviesDF.select(
+    col("Title"),
+    split(col("Title"), " |,").as("Title_Words") // an array of strings
+  )
+
+  moviesWithWords.select(
+    col("Title"),
+    expr("Title_Words[0]"),
+    size(col("Title_words")),
+    array_contains(col("Title_Words"), "Love")
+  )
 }
