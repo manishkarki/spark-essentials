@@ -27,4 +27,10 @@ object ComplexTypes extends App {
 
   moviesWithReleaseDates.select("*")
     .where(col("Actual_Release").isNull)
+
+  /**
+    * Exercise
+    * 1. How do we deal with multiple date formats?
+    * 2. Read the stocks DF and parse dates
+    */
 }
