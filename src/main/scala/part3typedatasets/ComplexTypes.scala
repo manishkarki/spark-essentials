@@ -21,17 +21,14 @@ object ComplexTypes extends App {
   spark.sql("set spark.sql.legacy.timeParserPolicy=LEGACY")
   //Dates
   val moviesWithReleaseDates = moviesDF
-    .select(col("Title"),
-            to_date(col("Release_Date"), "dd-MMM-yy")
-              .as("Actual_Release")) // conversion
+    .select(
+      col("Title"),
+      to_date(col("Release_Date"), "dd-MMM-yy").as("Actual_Release")) // conversion
     .withColumn("Today", current_date()) // today
     .withColumn("Right_now", current_timestamp()) // now
-    .withColumn(
-      "movie_age",
-      datediff(col("Today"), col("Actual_Release")) / 365) // diff in days, similarly we also have date_add, date_sub
+    .withColumn("movie_age", datediff(col("Today"), col("Actual_Release")) / 365) // diff in days, similarly we also have date_add, date_sub
 
-  moviesWithReleaseDates
-    .select("*")
+  moviesWithReleaseDates.select("*")
     .where(col("Actual_Release").isNull)
 
   /**
