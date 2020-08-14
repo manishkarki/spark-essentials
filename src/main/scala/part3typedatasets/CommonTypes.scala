@@ -84,7 +84,7 @@ object CommonTypes extends App {
 
   //v2- contains
   val carNameFilters = getCarNames.map(_.toLowerCase()).map(name => col("Name").contains(name))
-  val bigFilter = carNameFilters.fold(lit(false)) ((combinedFilter, newCarNameFilter) =>
-    combinedFilter or newCarNameFilter
+  val bigFilter = carNameFilters.fold(lit(false)) ((prev, next) =>
+    prev or next
   )
 }
