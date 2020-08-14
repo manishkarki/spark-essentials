@@ -57,7 +57,7 @@ object CommonTypes extends App {
   val vWDF = carsDF.select(
     col("Name"),
     regexp_extract(col("Name"), regexString, 0).as("regex_extract")
-  ).where(col("regex_extract") =!= "")
+  ).where(col("regex_extract") =!= "").drop("regex_extract")
 
   carsDF.select(
     col("Name"),
