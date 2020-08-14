@@ -64,4 +64,12 @@ object CommonTypes extends App {
     col("Name"),
     regexp_replace(col("Name"), regexString, "People's Car").as("regex_replace")
   )
+
+
+  /**
+    * Exercise
+    * 1. Filter cars DF by a list of car names obtained by an API call
+    */
+
+  def getCarNames: List[String] = ???
 }
