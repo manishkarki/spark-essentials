@@ -20,7 +20,6 @@ object CommonTypes extends App {
   // adding a plain value to a DF
   moviesDF
     .select(col("title"), col("Major_Genre"), lit(47).as("plain_value"))
-    .show()
 
   //Booleans
   val dramaFilter = col("Major_Genre") equalTo "Drama"
@@ -64,5 +63,5 @@ object CommonTypes extends App {
   vWDF.select(
     col("Name"),
     regexp_replace(col("Name"), regexString, "People's Car").as("regex_replace")
-  ).show
+  )
 }
