@@ -1,6 +1,6 @@
 package part3typedatasets
 
-import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.{Dataset, Encoders, SparkSession}
 
 /**
   * @author mkarki
@@ -17,4 +17,10 @@ object Datasets extends App {
     .load("src/main/resources/data/numbers.csv")
 
   numbersDF.printSchema()
+
+  // convert DF to DS
+  implicit val intEncoder = Encoders.scalaInt
+  val numbersDS: Dataset[Int] = numbersDF.as[Int]
+
+  numbersDS.filter(_ < 100)
 }
