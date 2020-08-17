@@ -35,4 +35,10 @@ object ManagingNulls extends App {
 
   // replace nulls
   moviesDF.na.fill(0, List("IMDB_Rating", "Rotten_Tomatoes_Rating"))
+
+  moviesDF.na.fill(Map(
+    "IMDB_Rating" -> 0,
+    "Rotten_Tomatoes_Rating" -> 10,
+    "Director" -> "Unknown"
+  ))
 }
