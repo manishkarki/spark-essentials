@@ -41,4 +41,15 @@ object ManagingNulls extends App {
     "Rotten_Tomatoes_Rating" -> 10,
     "Director" -> "Unknown"
   ))
+
+  // complex operations
+  moviesDF.selectExpr(
+    "Title",
+    "IMDB_Rating",
+    "Rotten_Tomatoes_Rating",
+    "ifnull(Rotten_Tomatoes_Rating, IMDB_Rating * 10) as ifnull", // same as coaelsce
+    "nvl(Rotten_Tomatoes_Rating, IMDB_Rating * 10) as nvl", // same
+    "nullif(Rotten_Tomatoes_Rating, IMDB_Rating * 10) as nullif",  // return null if the two values are EQUAL, else FIRST value
+    "nvl2(Rotten_Tomatoes_Rating, IMDB_Rating * 10, 0.0) as nvls" // if(first != null) second else third
+  ).show
 }
