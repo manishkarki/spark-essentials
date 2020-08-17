@@ -51,5 +51,5 @@ object ManagingNulls extends App {
     "nvl(Rotten_Tomatoes_Rating, IMDB_Rating * 10) as nvl", // same
     "nullif(Rotten_Tomatoes_Rating, IMDB_Rating * 10) as nullif",  // return null if the two values are EQUAL, else FIRST value
     "nvl2(Rotten_Tomatoes_Rating, IMDB_Rating * 10, 0.0) as nvls" // if(first != null) second else third
-  ).show
+  )
 }
