@@ -22,5 +22,5 @@ object Datasets extends App {
   implicit val intEncoder = Encoders.scalaInt
   val numbersDS: Dataset[Int] = numbersDF.as[Int]
 
-  numbersDS.filter(_ < 100)
+
 }
