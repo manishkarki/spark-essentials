@@ -21,5 +21,5 @@ object ManagingNulls extends App {
     col("Rotten_Tomatoes_Rating"),
     col("IMDB_Rating"),
     coalesce(col("Rotten_Tomatoes_Rating"), col("IMDB_Rating") * 10).as("first_non_null_rating")
-  ).show()
+  )
 }
