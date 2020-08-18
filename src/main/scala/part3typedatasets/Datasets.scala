@@ -104,4 +104,10 @@ object Datasets extends App {
     array_contains(guitarPlayersDS.col("guitars"), guitarsDS.col("id")),
     "outer"
   )
+
+  // grouping datasets
+  val carsGroupedByOrigin = carsDS
+    .groupByKey(_.Origin)
+    .count()
+    .show()
 }
