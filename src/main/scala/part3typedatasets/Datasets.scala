@@ -54,4 +54,14 @@ object Datasets extends App {
 
   // map, flatMap, fold, reduce for comprehensions
   val carsNamesDS = carsDS.map(car => car.Name.toUpperCase())
+
+  /**
+    * Exercise
+    *
+    * 1. count how many cars we have
+    * 2. Powerful cars count, HP > 140
+    * 3. Compute the avg HP of entire DS
+    */
+
+  //1
 }
