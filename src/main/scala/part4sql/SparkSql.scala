@@ -33,5 +33,4 @@ object SparkSql extends App {
   spark.sql("CREATE database rtjvm")
   spark.sql("USE rtjvm")
   val databasesDF = spark.sql("SHOW databases")
-  databasesDF.show()
 }
