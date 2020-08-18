@@ -66,14 +66,14 @@ object SparkSql extends App {
     .mode(SaveMode.Overwrite)
     .saveAsTable("employees")
 
-  transferTables(
+  /*transferTables(
     List("employees",
          "departments",
          "titles",
          "dept_emp",
          "salaries",
          "dept_manager")
-  )
+  )*/
 
   // read DF from DW
   val empployeesDF2 = spark.read
