@@ -43,7 +43,7 @@ object SparkSql extends App {
   val password: String = "docker"
 
   // reading from a DB postgress, just go to the terminal and enter: docker-compose up
-  def readTable(tableName: String) =
+  def readPostgresTable(tableName: String) =
     spark.read
       .format("jdbc")
       .option("driver", driver)
@@ -55,16 +55,16 @@ object SparkSql extends App {
 
   def transferTables(tableNames: List[String]) =
     tableNames.foreach(tableName => {
-      val tableDF = readTable(tableName)
+      val tableDF = readPostgresTable(tableName)
       tableDF.createOrReplaceTempView(tableName)
       tableDF.write
         .mode(SaveMode.Overwrite)
         .saveAsTable(tableName)
     })
-  val employeesDF = readTable("employees")
-  employeesDF.write
+//  val employeesDF = readTable("employees")
+ /* employeesDF.write
     .mode(SaveMode.Overwrite)
-    .saveAsTable("employees")
+    .saveAsTable("employees")*/
 
   /*transferTables(
     List("employees",
@@ -76,8 +76,9 @@ object SparkSql extends App {
   )*/
 
   // read DF from DW
-  val empployeesDF2 = spark.read
-    .table("employees")
+  spark.sql("USE rtjvm")
+//  val empployeesDF2 = spark.read
+//    .table("employees")
 
   /**
     *  Exercises
@@ -87,4 +88,17 @@ object SparkSql extends App {
     *  3. Show the average salaries for the employees hired in between those dates, grouped by department
     *  4. Show the name of the best paying department for employees hired in between those dates
     */
+
+  // 1
+  val moviesDF = spark.read
+    .json("src/main/resources/data/movies.json")
+  // create the table
+
+  //now save
+  moviesDF.write
+    .mode(SaveMode.Overwrite)
+    .saveAsTable("rtjvm.movies")
+
+  //2
+
 }
