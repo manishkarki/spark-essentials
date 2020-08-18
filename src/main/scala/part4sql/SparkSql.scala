@@ -78,5 +78,4 @@ object SparkSql extends App {
   // read DF from DW
   val empployeesDF2 = spark.read
     .table("employees")
-    .show()
 }
