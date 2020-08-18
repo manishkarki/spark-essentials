@@ -53,5 +53,5 @@ object Datasets extends App {
   numbersDS.filter(_ < 100).show
 
   // map, flatMap, fold, reduce for comprehensions
-  val carsNamesDS = carsDS.map(car => car.Name.toUpperCase()).show()
+  val carsNamesDS = carsDS.map(car => car.Name.toUpperCase())
 }
