@@ -2,7 +2,7 @@ package part3typedatasets
 
 import java.sql.Date
 
-import org.apache.spark.sql.functions.{avg, to_date}
+import org.apache.spark.sql.functions.{array_contains, avg, to_date}
 import org.apache.spark.sql.{DataFrame, Dataset, Encoders, SparkSession}
 
 /**
@@ -99,4 +99,9 @@ object Datasets extends App {
     * Exercise
     * 1. join GuitarPlayersDS with GuitarsDS, use an outer_join
     */
+  val guitarPlayersGuitarsDS = guitarPlayersDS.joinWith(
+    guitarsDS,
+    array_contains(guitarPlayersDS.col("guitars"), guitarsDS.col("id")),
+    "outer"
+  ).show
 }
