@@ -69,7 +69,7 @@ object DataFramesBasics extends App {
     ("amc ambassador dpl", 15.0, 8L, 390.0, 190L, 3850L, 8.5, "1970-01-01", "USA")
   )
 
-  val manualCarsDf = spark.createDataFrame(cars) // shcema auto-inferred
+  val manualCarsDf = spark.createDataFrame(cars) // schema auto-inferred
 
   // note: DFs have schemas, row do not
 
