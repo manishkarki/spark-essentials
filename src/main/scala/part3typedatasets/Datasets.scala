@@ -94,6 +94,5 @@ object Datasets extends App {
     guitarPlayersDS.joinWith(bandDS,
                              guitarPlayersDS.col("band") === bandDS.col("id"),
                              "inner") // default is inner
-  guitarPlayerBandsDS.show()
 
 }
