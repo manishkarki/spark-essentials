@@ -1,5 +1,7 @@
 package part3typedatasets
 
+import java.sql.Date
+
 import org.apache.spark.sql.{Dataset, Encoders, SparkSession}
 
 /**
@@ -13,14 +15,39 @@ object Datasets extends App {
 
   val numbersDF = spark.read
     .format("csv")
+    .option("inferSchema", "true")
     .option("header", "true")
     .load("src/main/resources/data/numbers.csv")
-
-  numbersDF.printSchema()
 
   // convert DF to DS
   implicit val intEncoder = Encoders.scalaInt
   val numbersDS: Dataset[Int] = numbersDF.as[Int]
 
+  // dataset of a complex type
+  // 1 - define the case class
+  case class Car(
+                Name: String,
+                Miles_per_Gallon: Double,
+                Cylinders: Long,
+                Displacement: Double,
+                HorsePower: Long,
+                Weight_in_lbs: Long,
+                Acceleration: Double,
+                Year: Date,
+                Origin: String
+                )
+  // 2 - read the DF from the file
+  def readDF(fileName: String) = spark.read
+    .option("inferSchema", "true")
+    .json(s"src/main/resources/data/$fileName")
 
+  // 3 - define an encoder
+  import spark.implicits._
+  val carsDF = readDF("cars.json")
+//  implicit val carEncoder = Encoders.product[Car]
+  // 4 - convert DF to DS
+//  val carsDS = carsDF.as[Car]
+
+  // DS collection functions
+  numbersDS.filter(_ < 100).show
 }
