@@ -109,7 +109,6 @@ object Datasets extends App {
   val carsGroupedByOrigin = carsDS
     .groupByKey(_.Origin)
     .count()
-    .show()
 
   // Joins and groups are WIDE transformations, will involve shuffle operations
 }
