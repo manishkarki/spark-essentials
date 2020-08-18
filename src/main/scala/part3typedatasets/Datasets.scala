@@ -88,11 +88,15 @@ object Datasets extends App {
 
   val guitarsDS = readDF("guitars.json").as[Guitar]
   val guitarPlayersDS = readDF("guitarPlayers.json").as[GuitarPlayer]
-  val bandDS = readDF("bands.json").as[Band]
+  val bandsDS = readDF("bands.json").as[Band]
 
   val guitarPlayerBandsDS: Dataset[(GuitarPlayer, Band)] =
-    guitarPlayersDS.joinWith(bandDS,
-                             guitarPlayersDS.col("band") === bandDS.col("id"),
+    guitarPlayersDS.joinWith(bandsDS,
+                             guitarPlayersDS.col("band") === bandsDS.col("id"),
                              "inner") // default is inner
 
+  /**
+    * Exercise
+    * 1. join GuitarPlayersDS with GuitarsDS, use an outer_join
+    */
 }
