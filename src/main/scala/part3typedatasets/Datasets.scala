@@ -2,8 +2,8 @@ package part3typedatasets
 
 import java.sql.Date
 
-import org.apache.spark.sql.functions.to_date
-import org.apache.spark.sql.{Dataset, Encoders, SparkSession}
+import org.apache.spark.sql.functions.{avg, to_date}
+import org.apache.spark.sql.{DataFrame, Dataset, Encoders, SparkSession}
 
 /**
   * @author mkarki
@@ -14,7 +14,7 @@ object Datasets extends App {
     .config("spark.master", "local")
     .getOrCreate()
 
-  val numbersDF = spark.read
+  val numbersDF: DataFrame = spark.read
     .format("csv")
     .option("inferSchema", "true")
     .option("header", "true")
@@ -72,5 +72,8 @@ object Datasets extends App {
 
   //3
   println(carsDS.map(_.HorsePower.getOrElse(0L)).reduce(_ + _) / carsCount)
+
+  // also use DF functions
+  carsDS.select(avg("HorsePower")).show()
 
 }
