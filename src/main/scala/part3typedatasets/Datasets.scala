@@ -50,7 +50,7 @@ object Datasets extends App {
   val carsDS = carsDF.as[Car]
 
   // DS collection functions
-  numbersDS.filter(_ < 100).show
+  numbersDS.filter(_ < 100)
 
   // map, flatMap, fold, reduce for comprehensions
   val carsNamesDS = carsDS.map(car => car.Name.toUpperCase())
@@ -64,4 +64,13 @@ object Datasets extends App {
     */
 
   //1
+  val carsCount = carsDS.count()
+  println(carsDS.count())
+
+  // 2
+  println(carsDS.filter(_.HorsePower.getOrElse(0L) > 140).count())
+
+  //3
+  println(carsDS.map(_.HorsePower.getOrElse(0L)).reduce(_ + _) / carsCount)
+
 }
