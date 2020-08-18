@@ -2,6 +2,7 @@ package part3typedatasets
 
 import java.sql.Date
 
+import org.apache.spark.sql.functions.to_date
 import org.apache.spark.sql.{Dataset, Encoders, SparkSession}
 
 /**
@@ -27,10 +28,10 @@ object Datasets extends App {
   // 1 - define the case class
   case class Car(
                 Name: String,
-                Miles_per_Gallon: Double,
+                Miles_per_Gallon: Option[Double],
                 Cylinders: Long,
                 Displacement: Double,
-                HorsePower: Long,
+                HorsePower: Option[Long],
                 Weight_in_lbs: Long,
                 Acceleration: Double,
                 Year: Date,
@@ -43,11 +44,14 @@ object Datasets extends App {
 
   // 3 - define an encoder
   import spark.implicits._
-  val carsDF = readDF("cars.json")
+  val carsDF = readDF("cars.json").withColumn("Year", to_date($"Year", "yyyy-MM-dd"))
 //  implicit val carEncoder = Encoders.product[Car]
   // 4 - convert DF to DS
-//  val carsDS = carsDF.as[Car]
+  val carsDS = carsDF.as[Car]
 
   // DS collection functions
   numbersDS.filter(_ < 100).show
+
+  // map, flatMap, fold, reduce for comprehensions
+  val carsNamesDS = carsDS.map(car => car.Name.toUpperCase()).show()
 }
