@@ -78,4 +78,13 @@ object SparkSql extends App {
   // read DF from DW
   val empployeesDF2 = spark.read
     .table("employees")
+
+  /**
+    *  Exercises
+    *
+    *  1. Read the movies DF and store it as a spark table in the rtjvm database
+    *  2. Count how many employees were hired in between Jan 1 2000 and Jan 1 2001
+    *  3. Show the average salaries for the employees hired in between those dates, grouped by department
+    *  4. Show the name of the best paying department for employees hired in between those dates
+    */
 }
