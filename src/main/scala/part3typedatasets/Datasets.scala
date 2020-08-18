@@ -103,5 +103,5 @@ object Datasets extends App {
     guitarsDS,
     array_contains(guitarPlayersDS.col("guitars"), guitarsDS.col("id")),
     "outer"
-  ).show
+  )
 }
