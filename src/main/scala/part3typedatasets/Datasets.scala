@@ -110,4 +110,6 @@ object Datasets extends App {
     .groupByKey(_.Origin)
     .count()
     .show()
+
+  // Joins and groups are WIDE transformations, will involve shuffle operations
 }
