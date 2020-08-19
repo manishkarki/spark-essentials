@@ -133,6 +133,6 @@ object SparkSql extends App {
        | ORDER BY payments DESC
        | LIMIT 1
        |""".stripMargin
-  ).show
+  )
 
 }
