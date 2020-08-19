@@ -75,4 +75,28 @@ object RDDs extends App {
 
   // grouping
   val groupedStocksRDD = stocksRDD.groupBy(_.symbol) // very expensive operation
+
+  // partitioning
+  val repartitionStocksRDD = stocksRDD.repartition(30)
+
+  /*
+     Repartitioning is expensive, involves shuffling
+     Best practice: partition EARLY, then process that
+      Size of a partition 10-100MB
+    */
+
+  // coalesce: fewer partition than now
+  val coalescedRDD = repartitionStocksRDD.coalesce(15) // does NOT involve shuffling
+
+  /**
+    * Exercise
+    * 1. Read the movies.json as an RDD
+    * 2. show the distinct genres as an RDD
+    * 3. Select all the movies in the Drama genre with IMDB rating > 6
+    * 4. Show the average rating of movies by genre
+    */
+
+  case class Movie(title: String, genre: String, rating: Double)
+
+
 }
