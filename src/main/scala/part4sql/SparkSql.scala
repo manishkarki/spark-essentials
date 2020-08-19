@@ -106,6 +106,18 @@ object SparkSql extends App {
        | SELECT count(*) FROM employees
        | WHERE hire_date > '2000-01-01' AND hire_date < '2001-01-01'
        |""".stripMargin
+  )
+
+  //3
+  spark.sql(
+    s"""
+       | SELECT avg(s.salary), de.dept_no
+       | FROM employees e, salaries s, dept_emp de
+       | WHERE e.hire_date > '1999-01-01' AND e.hire_date < '2001-01-01'
+       |  AND e.emp_no = de.emp_no
+       |  AND e.emp_no = s.emp_no
+       | GROUP BY de.dept_no
+       |""".stripMargin
   ).show()
 
 }
