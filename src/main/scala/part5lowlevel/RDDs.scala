@@ -1,6 +1,7 @@
 package part5lowlevel
 
 import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.functions.{coalesce, col}
 
 import scala.io.Source
 
@@ -49,8 +50,8 @@ object RDDs extends App {
     .csv("src/main/resources/data/stocks.csv")
 
   import spark.implicits._
-  val stocksDS = stocksDF.as[StockValue]
-  val stocksRDD3 = stocksDS.rdd
+//  val stocksDS = stocksDF.as[StockValue]
+//  val stocksRDD3 = stocksDS.rdd
 
   // RDD -> DF
   val numbersDF = numbersRDD.toDF("numbers")
@@ -98,5 +99,34 @@ object RDDs extends App {
 
   case class Movie(title: String, genre: String, rating: Double)
 
+  val moviesRDD = spark.read
+    .json("src/main/resources/data/movies.json")
+    .select(
+      col("Title").as("title"),
+      col("Major_Genre").as("genre"),
+      col("IMDB_Rating").as("rating")
+    ).where(col("genre").isNotNull and col("rating").isNotNull)
+    .as[Movie]
+    .rdd
+
+  // 2
+  val genresRDD = moviesRDD.map(_.genre).distinct()
+
+  // 3
+  val goodDramaMoviesRDD = moviesRDD.filter(movie => movie.rating > 6 && movie.genre.equals("Drama"))
+
+  /*moviesRDD.toDF().show()
+  genresRDD.toDF().show()
+  goodDramaMoviesRDD.toDF().show()*/
+
+  case class GenreAvgRating(genre: String, rating: Double)
+
+  //4
+  val avgRatingByGenreRDD = moviesRDD.groupBy(_.genre).map{
+    case(genre, movies) => GenreAvgRating(genre, movies.map(_.rating).sum / movies.size)
+  }
+
+  avgRatingByGenreRDD.toDF.show
+  moviesRDD.toDF.groupBy(col("genre")).avg("rating").show
 
 }
