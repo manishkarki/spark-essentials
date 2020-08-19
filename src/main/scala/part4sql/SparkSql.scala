@@ -120,4 +120,19 @@ object SparkSql extends App {
        |""".stripMargin
   )
 
+  //4
+  spark.sql(
+    s"""
+       | SELECT avg(s.salary) as payments, d.dept_name
+       | FROM employees e, salaries s, dept_emp de, departments d
+       | WHERE e.hire_date > '1999-01-01' AND e.hire_date < '2001-01-01'
+       |  AND e.emp_no = de.emp_no
+       |  AND e.emp_no = s.emp_no
+       |  AND de.dept_no = d.dept_no
+       | GROUP BY d.dept_name
+       | ORDER BY payments DESC
+       | LIMIT 1
+       |""".stripMargin
+  ).show
+
 }
