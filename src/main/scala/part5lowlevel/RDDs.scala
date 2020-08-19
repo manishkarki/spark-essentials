@@ -126,7 +126,8 @@ object RDDs extends App {
     case(genre, movies) => GenreAvgRating(genre, movies.map(_.rating).sum / movies.size)
   }
 
-  avgRatingByGenreRDD.toDF.show
-  moviesRDD.toDF.groupBy(col("genre")).avg("rating").show
+  avgRatingByGenreRDD.toDF
+  // should be equivalent
+  moviesRDD.toDF.groupBy(col("genre")).avg("rating")
 
 }
