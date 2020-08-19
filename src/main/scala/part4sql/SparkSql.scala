@@ -29,7 +29,6 @@ object SparkSql extends App {
     .sql("""
       | SELECT Name FROM cars WHERE origin = 'USA'
     """.stripMargin)
-    .show()
 
   // we can run any SQL statement
   spark.sql("CREATE database rtjvm")
@@ -53,31 +52,34 @@ object SparkSql extends App {
       .option("dbtable", s"public.$tableName")
       .load()
 
-  def transferTables(tableNames: List[String]) =
+  def transferTables(tableNames: List[String], shouldWriteToWarehouse: Boolean = false) =
     tableNames.foreach(tableName => {
       val tableDF = readPostgresTable(tableName)
       tableDF.createOrReplaceTempView(tableName)
-      tableDF.write
-        .mode(SaveMode.Overwrite)
-        .saveAsTable(tableName)
+
+      if(shouldWriteToWarehouse) {
+        tableDF.write
+          .mode(SaveMode.Overwrite)
+          .saveAsTable(tableName)
+      }
     })
 //  val employeesDF = readTable("employees")
  /* employeesDF.write
     .mode(SaveMode.Overwrite)
     .saveAsTable("employees")*/
 
-  /*transferTables(
+  transferTables(
     List("employees",
          "departments",
          "titles",
          "dept_emp",
          "salaries",
          "dept_manager")
-  )*/
+  )
 
-  // read DF from DW
+  // read DF from loaded spark tables
   val employeesDF2 = spark.read
-    .table("rtjvm.employees")
+    .table("employees")
 
   /**
     *  Exercises
@@ -94,10 +96,16 @@ object SparkSql extends App {
   // create the table
 
   //now save
-  moviesDF.write
-    .mode(SaveMode.Overwrite)
-    .saveAsTable("rtjvm.movies")
+//  moviesDF.write
+//    .mode(SaveMode.Overwrite)
+//    .saveAsTable("movies")
 
   //2
+  spark.sql(
+    s"""
+       | SELECT count(*) FROM employees
+       | WHERE hire_date > '2000-01-01' AND hire_date < '2001-01-01'
+       |""".stripMargin
+  ).show()
 
 }
