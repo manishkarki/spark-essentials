@@ -118,6 +118,6 @@ object SparkSql extends App {
        |  AND e.emp_no = s.emp_no
        | GROUP BY de.dept_no
        |""".stripMargin
-  ).show()
+  )
 
 }
